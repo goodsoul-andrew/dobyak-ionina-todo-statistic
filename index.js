@@ -50,9 +50,8 @@ function processCommand(command) {
   } else if (command.startsWith('user')) {
     const name = command.slice(5);
     for (const line of comm) {
-        const pLine = parseLine(line);
-        if (pLine.user === name) {
-            console.log(pLine.comment);
+        if (line.user === name) {
+            console.log(line.comment);
         }
     }
   } else if (command.startsWith('sort')) {
@@ -104,7 +103,7 @@ function parseLine(line) {
     if (arr.length !== 3) user = null;  
     return {
         user: user,
-        date: parseDate(arr[1]) ?? null,
+        date: arr[1] ? parseDate(arr[1]) : null,
         comment: line,
         important: count(line, "!")
     }
