@@ -48,8 +48,8 @@ function processCommand(command) {
     if (arg === 'importance') {
         comm.sort((a, b) => {
             if (a.important === b.important) return 0;
-            else if (a.important > b.important) return 1;
-            else return -1;
+            else if (a.important > b.important) return -1;
+            else return 1;
         });
 
         for (const line of comm) {
@@ -62,6 +62,10 @@ function processCommand(command) {
   }
 }
 
+function count(str, c) {
+    return str.split(c).length - 1;
+}
+
 function parseLine(line) {
     const arr = line.split(';');
     let user = arr[0].toLowerCase() ?? null
@@ -70,7 +74,7 @@ function parseLine(line) {
         user: user,
         date: arr[1] ?? null,
         comment: arr[2] ?? line,
-        important: line.count("!")
+        important: count(line, "!")
     }
 }
 
