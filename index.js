@@ -82,10 +82,19 @@ function parseLine(line) {
     if (arr.length !== 3) user = null;  
     return {
         user: user,
-        date: arr[1] ?? null,
+        date: parseDate(arr[1]) ?? null,
         comment: line,
         important: count(line, "!")
     }
+}
+
+function parseDate(dateStr) {
+    const parts = dateStr.split('-').map(Number);
+    const year = parts[0];
+    const month = parts[1] ? parts[1] - 1 : 0;
+    const day = parts[2] ? parts[2] : 1;
+    
+    return new Date(year, month, day);
 }
 
 // TODO you can do it!
