@@ -65,6 +65,16 @@ function processCommand(command) {
         for (const line of comm) {
             console.log(line.comment);
         }
+    } else {
+        comm.sort((a, b) => {
+            if (a.date === b.date) return 0;
+            else if (a.date > b.date) return -1;
+            else return 1;
+        });
+        
+        for (const line of comm) {
+            console.log(line.comment);
+        }
     }
   }
   else {
