@@ -9,23 +9,11 @@ const filesTodo = filesTodoRaw.map((arr) =>
   arr.map((el) => el.slice(8, el.length - 1))
 );
 
-const lines = []
-const impLines = []
+const comm = [];
 for (const file of filesTodo) {
-      for (const line of file) {
-        if (line.include("!")) {
-            impLines.push(line)
-        } else {
-            lines.push(line);
-        }
-    }
-}
-
-const comm = []
-for (const file of filesTodo) {
-      for (const line of file) {
-        comm.push(parseLine(line));
-    }
+  for (const line of file) {
+    comm.push(parseLine(line));
+  }
 }
 
 console.log("Please, write your command!");
@@ -40,82 +28,85 @@ function processCommand(command) {
   if (command === "exit") {
     process.exit(0);
   } else if (command === "show") {
-    for (const line of lines) {
+    for (const arr of filesTodo) {
+      for (const line of arr) {
         console.log(line);
+      }
     }
   } else if (command === "important") {
-    for (const line of impLines) {
-        console.log(line);
+    for (const line of comm) {
+      if (line.important) {
+        console.log(line.comment);
+      }
     }
-  } else if (command.startsWith('user')) {
+  } else if (command.startsWith("user")) {
     const name = command.slice(5);
     for (const line of comm) {
-        if (line.user === name) {
-            console.log(line.comment);
-        }
+      if (line.user === name) {
+        console.log(line.comment);
+      }
     }
-  } else if (command.startsWith('sort')) {
+  } else if (command.startsWith("sort")) {
     const arg = command.slice(5);
-    if (arg === 'importance') {
-        comm.sort((a, b) => {
-            if (a.important === b.important) return 0;
-            else if (a.important > b.important) return -1;
-            else return 1;
-        });
+    if (arg === "importance") {
+      comm.sort((a, b) => {
+        if (a.important === b.important) return 0;
+        else if (a.important > b.important) return -1;
+        else return 1;
+      });
 
-        for (const line of comm) {
-            console.log(line.comment);
-        }
-    } else if (arg === 'user') {
-        comm.sort((a, b) => {
-            if (a.user === b.user) return 0;
-            else if (a.user > b.user) return -1;
-            else return 1;
-        });
+      for (const line of comm) {
+        console.log(line.comment);
+      }
+    } else if (arg === "user") {
+      comm.sort((a, b) => {
+        if (a.user === b.user) return 0;
+        else if (a.user > b.user) return -1;
+        else return 1;
+      });
 
-        for (const line of comm) {
-            console.log(line.comment);
-        }
+      for (const line of comm) {
+        console.log(line.comment);
+      }
     } else {
-        comm.sort((a, b) => {
-            if (a.date === b.date) return 0;
-            else if (a.date > b.date) return -1;
-            else return 1;
-        });
-        
-        for (const line of comm) {
-            console.log(line.comment);
-        }
+      comm.sort((a, b) => {
+        if (a.date === b.date) return 0;
+        else if (a.date > b.date) return -1;
+        else return 1;
+      });
+
+      for (const line of comm) {
+        console.log(line.comment);
+      }
     }
-  }
-  else {
+  } else {
     console.log("wrong command");
   }
 }
 
 function count(str, c) {
-    return str.split(c).length - 1;
+  return str.split(c).length - 1;
 }
 
 function parseLine(line) {
-    const arr = line.split(';');
-    let user = arr[0].toLowerCase() ?? null
-    if (arr.length !== 3) user = null;  
-    return {
-        user: user,
-        date: arr[1] ? parseDate(arr[1]) : null,
-        comment: line,
-        important: count(line, "!")
-    }
+  const arr = line.split(";");
+  let user = arr[0].toLowerCase() ?? null;
+  if (arr.length !== 3) user = null;
+  return {
+    user: user,
+    date: arr[1] ? parseDate(arr[1]) : null,
+    comment: line,
+    important: count(line, "!"),
+  };
 }
 
 function parseDate(dateStr) {
-    const parts = dateStr.split('-').map(Number);
-    const year = parts[0];
-    const month = parts[1] ? parts[1] - 1 : 0;
-    const day = parts[2] ? parts[2] : 1;
-    
-    return new Date(year, month, day);
+  const parts = dateStr.split("-").map(Number);
+  const year = parts[0];
+  const month = parts[1] ? parts[1] - 1 : 0;
+  const day = parts[2] ? parts[2] : 1;
+
+  return new Date(year, month, day);
 }
 
 // TODO you can do it!
