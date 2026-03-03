@@ -92,7 +92,7 @@ function parseLine(line) {
     if (arr.length !== 3) user = null;  
     return {
         user: user,
-        date: parseDate(arr[1]) ?? null,
+        date: arr[1] ? parseDate(arr[1]) : null,
         comment: line,
         important: count(line, "!")
     }
