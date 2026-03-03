@@ -55,6 +55,16 @@ function processCommand(command) {
         for (const line of comm) {
             console.log(line.comment);
         }
+    } else if (arg === 'user') {
+        comm.sort((a, b) => {
+            if (a.user === b.user) return 0;
+            else if (a.user > b.user) return -1;
+            else return 1;
+        });
+
+        for (const line of comm) {
+            console.log(line.comment);
+        }
     }
   }
   else {
@@ -73,7 +83,7 @@ function parseLine(line) {
     return {
         user: user,
         date: arr[1] ?? null,
-        comment: arr[2] ?? line,
+        comment: line,
         important: count(line, "!")
     }
 }
