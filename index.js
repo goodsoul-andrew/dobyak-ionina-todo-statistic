@@ -10,14 +10,9 @@ const filesTodo = filesTodoRaw.map((arr) =>
 );
 
 const comm = []
-const impComm = []
 for (const file of filesTodo) {
       for (const line of file) {
-        if (line.includes("!")) {
-            impComm.push(line);
-        } else {
-            comm.push(line);
-        }
+        comm.push(parseLine(line));
     }
 }
 
@@ -44,12 +39,25 @@ function processCommand(command) {
     const name = command.slice(5);
     for (const line of comm) {
         const pLine = parseLine(line);
-        //console.log(pLine.user, pLine.user === name)
         if (pLine.user === name) {
             console.log(pLine.comment);
         }
     }
-  } else {
+  } else if (command.startsWith('sort')) {
+    const arg = command.slice(5);
+    if (arg === 'importance') {
+        comm.sort((a, b) => {
+            if (a.important === b.important) return 0;
+            else if (a.important > b.important) return 1;
+            else return -1;
+        });
+
+        for (const line of comm) {
+            console.log(line.comment);
+        }
+    }
+  }
+  else {
     console.log("wrong command");
   }
 }
@@ -62,7 +70,7 @@ function parseLine(line) {
         user: user,
         date: arr[1] ?? null,
         comment: arr[2] ?? line,
-        important: line.includes("!")
+        important: line.count("!")
     }
 }
 
