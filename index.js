@@ -9,6 +9,18 @@ const filesTodo = filesTodoRaw.map((arr) =>
   arr.map((el) => el.slice(8, el.length - 1))
 );
 
+const lines = []
+const impLines = []
+for (const file of filesTodo) {
+      for (const line of file) {
+        if (line.include("!")) {
+            impLines.push(line)
+        } else {
+            lines.push(line);
+        }
+    }
+}
+
 const comm = []
 for (const file of filesTodo) {
       for (const line of file) {
@@ -28,11 +40,11 @@ function processCommand(command) {
   if (command === "exit") {
     process.exit(0);
   } else if (command === "show") {
-    for (const line of comm) {
+    for (const line of lines) {
         console.log(line);
     }
   } else if (command === "important") {
-    for (const line of impComm) {
+    for (const line of impLines) {
         console.log(line);
     }
   } else if (command.startsWith('user')) {
