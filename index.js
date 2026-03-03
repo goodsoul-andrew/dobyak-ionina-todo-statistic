@@ -37,8 +37,9 @@ function processCommand(command) {
     for (const file of filesTodo) {
       for (const line of file) {
         const pLine = parseLine(line);
-        if (pLine && pLine[0] === name) {
-            console.log(pLine[2]);
+        //console.log(pLine.user, pLine.user === name)
+        if (pLine.user === name) {
+            console.log(pLine.comment);
         }
       }
     }
@@ -49,7 +50,14 @@ function processCommand(command) {
 
 function parseLine(line) {
     const arr = line.split(';');
-    return arr.length === 3 ? arr : null;
+    let user = arr[0].toLowerCase() ?? null
+    if (arr.length !== 3) user = null;  
+    return {
+        user: user,
+        date: arr[1] ?? null,
+        comment: arr[2] ?? line,
+        important: line.includes("!")
+    }
 }
 
 // TODO you can do it!
