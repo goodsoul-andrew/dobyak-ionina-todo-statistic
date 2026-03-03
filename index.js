@@ -32,9 +32,28 @@ function processCommand(command) {
         console.log(line);
       }
     }
+  } else if (command.startsWith('user')) {
+    console.log('user');
+    const name = command.slice(5);
+    console.log(name);
+    for (const file of filesTodo) {
+      for (const line of file) {
+        const pLine = parseLine(line);
+        console.log(pLine);
+        if (pLine && pLine[0] === name) {
+            console.log(pLine[2]);
+        }
+      }
+    }
   } else {
     console.log("wrong command");
   }
+}
+
+function parseLine(line) {
+    const arr = line.split(';');
+    console.log(arr);
+    return arr.length === 3 ? arr : null;
 }
 
 // TODO you can do it!
